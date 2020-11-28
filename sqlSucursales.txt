@@ -1,0 +1,266 @@
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Color]    Script Date: 28/11/2020 17:03:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Color](
+	[idColor] [int] NOT NULL,
+	[Color] [nchar](20) NULL,
+ CONSTRAINT [PK_Color] PRIMARY KEY CLUSTERED 
+(
+	[idColor] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Modelo]    Script Date: 28/11/2020 17:04:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE TABLE [dbo].[Modelo](
+	[idModelo] [int] NOT NULL,
+	[Descripcion] [nchar](50) NULL,
+ CONSTRAINT [PK_Modelo] PRIMARY KEY CLUSTERED 
+(
+	[idModelo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Talle]    Script Date: 28/11/2020 17:05:19 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Talle](
+	[idTalle] [int] NOT NULL,
+	[Talle] [nchar](10) NULL,
+ CONSTRAINT [PK_Talle] PRIMARY KEY CLUSTERED 
+(
+	[idTalle] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Tipo]    Script Date: 28/11/2020 17:05:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Tipo](
+	[idTipo] [int] NOT NULL,
+	[Descripcion] [nchar](50) NULL,
+ CONSTRAINT [PK_Tipo] PRIMARY KEY CLUSTERED 
+(
+	[idTipo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Producto]    Script Date: 28/11/2020 17:14:31 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Producto](
+	[idProducto] [int] NOT NULL,
+	[idTipo] [int] NULL,
+	[idModelo] [int] NULL,
+	[idColor] [int] NULL,
+	[idTalle] [int] NULL,
+ CONSTRAINT [PK_Producto] PRIMARY KEY CLUSTERED 
+(
+	[idProducto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Color] FOREIGN KEY([idColor])
+REFERENCES [dbo].[Color] ([idColor])
+GO
+
+ALTER TABLE [dbo].[Producto] CHECK CONSTRAINT [FK_Producto_Color]
+GO
+
+ALTER TABLE [dbo].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Modelo] FOREIGN KEY([idModelo])
+REFERENCES [dbo].[Modelo] ([idModelo])
+GO
+
+ALTER TABLE [dbo].[Producto] CHECK CONSTRAINT [FK_Producto_Modelo]
+GO
+
+ALTER TABLE [dbo].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Talle] FOREIGN KEY([idTalle])
+REFERENCES [dbo].[Talle] ([idTalle])
+GO
+
+ALTER TABLE [dbo].[Producto] CHECK CONSTRAINT [FK_Producto_Talle]
+GO
+
+ALTER TABLE [dbo].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Tipo] FOREIGN KEY([idTipo])
+REFERENCES [dbo].[Tipo] ([idTipo])
+GO
+
+ALTER TABLE [dbo].[Producto] CHECK CONSTRAINT [FK_Producto_Tipo]
+GO
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Stock]    Script Date: 28/11/2020 17:15:30 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Stock](
+	[idStock] [nchar](10) NULL,
+	[idProducto] [int] NULL,
+	[idSucursal] [int] NULL,
+	[Cantidad] [int] NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Stock]  WITH CHECK ADD  CONSTRAINT [FK_Stock_Producto] FOREIGN KEY([idProducto])
+REFERENCES [dbo].[Producto] ([idProducto])
+GO
+
+ALTER TABLE [dbo].[Stock] CHECK CONSTRAINT [FK_Stock_Producto]
+GO
+
+ALTER TABLE [dbo].[Stock]  WITH CHECK ADD  CONSTRAINT [FK_Stock_Sucursal] FOREIGN KEY([idSucursal])
+REFERENCES [dbo].[Sucursal] ([idSucursal])
+GO
+
+ALTER TABLE [dbo].[Stock] CHECK CONSTRAINT [FK_Stock_Sucursal]
+GO
+
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Sucursal]    Script Date: 28/11/2020 17:16:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Sucursal](
+	[idSucursal] [int] NOT NULL,
+	[RazonSocial] [nchar](50) NULL,
+	[Direccion] [nchar](50) NULL,
+ CONSTRAINT [PK_Sucursal] PRIMARY KEY CLUSTERED 
+(
+	[idSucursal] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[DetallePedido]    Script Date: 28/11/2020 17:16:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DetallePedido](
+	[idDetallePedido] [int] NOT NULL,
+	[idProducto] [int] NULL,
+	[Cantidad] [int] NULL,
+ CONSTRAINT [PK_DetallePedido] PRIMARY KEY CLUSTERED 
+(
+	[idDetallePedido] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[DetallePedido]  WITH CHECK ADD  CONSTRAINT [FK_DetallePedido_Producto] FOREIGN KEY([idProducto])
+REFERENCES [dbo].[Producto] ([idProducto])
+GO
+
+ALTER TABLE [dbo].[DetallePedido] CHECK CONSTRAINT [FK_DetallePedido_Producto]
+GO
+
+USE [Gimnasio]
+GO
+
+/****** Object:  Table [dbo].[Pedido]    Script Date: 28/11/2020 17:17:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Pedido](
+	[idPedido] [int] NOT NULL,
+	[Fecha] [date] NULL,
+	[SucursalOrigen] [int] NULL,
+	[SucursalDestino] [int] NULL,
+	[idDetallePedido] [int] NULL,
+ CONSTRAINT [PK_Pedido] PRIMARY KEY CLUSTERED 
+(
+	[idPedido] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD  CONSTRAINT [FK_Pedido_DetallePedido] FOREIGN KEY([idDetallePedido])
+REFERENCES [dbo].[DetallePedido] ([idDetallePedido])
+GO
+
+ALTER TABLE [dbo].[Pedido] CHECK CONSTRAINT [FK_Pedido_DetallePedido]
+GO
+
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD  CONSTRAINT [FK_Pedido_Sucursal] FOREIGN KEY([SucursalOrigen])
+REFERENCES [dbo].[Sucursal] ([idSucursal])
+GO
+
+ALTER TABLE [dbo].[Pedido] CHECK CONSTRAINT [FK_Pedido_Sucursal]
+GO
+
+ALTER TABLE [dbo].[Pedido]  WITH CHECK ADD  CONSTRAINT [FK_Pedido_Sucursal1] FOREIGN KEY([SucursalDestino])
+REFERENCES [dbo].[Sucursal] ([idSucursal])
+GO
+
+ALTER TABLE [dbo].[Pedido] CHECK CONSTRAINT [FK_Pedido_Sucursal1]
+GO
+
+
+
+
+
+
